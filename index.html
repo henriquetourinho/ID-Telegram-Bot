@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 ID Telegram Bot | Descubra IDs no Telegram</title>
+    <meta name="description" content="Bot open source para identificar usuários, grupos e canais no Telegram de forma simples e rápida">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="ID Telegram Bot">
+    <meta property="og:description" content="Descubra IDs no Telegram de forma simples e rápida">
+    <meta property="og:image" content="https://github.com/henriquetourinho/id-telegram-bot/blob/main/media/demo.gif?raw=true">
+    <meta property="og:url" content="https://github.com/henriquetourinho/id-telegram-bot">
+    
+    <!-- Favicon Moderno -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+    
+    <!-- Pré-carregamento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" as="style">
+    
+    <style>
+        /* Sistema de Cores Moderno */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #ebf1ff;
+            --secondary: #7209b7;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #4895ef;
+                --primary-dark: #3a7bc8;
+                --primary-light: #1a365d;
+                --secondary: #b5179e;
+                --dark: #f8f9fa;
+                --light: #212529;
+                --gray: #adb5bd;
+            }
+        }
+        
+        /* Reset e Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Tipografia */
+        h1, h2, h3, h4, h5 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.25rem; }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            opacity: 0.9;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Header Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 0;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+        
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        /* Cards */
+        .card {
+            background-color: var(--light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            background-color: var(--primary-light);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature {
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            background-color: var(--light);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Seções */
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+        
+        /* Código */
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9em;
+        }
+        
+        /* Listas */
+        ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        ul li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+        
+        /* Tabelas */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .table th, .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .table th {
+            font-weight: 600;
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: var(--radius-lg);
+            margin: 3rem 0;
+        }
+        
+        .cta h2 {
+            color: white;
+        }
+        
+        .cta p {
+            color: white;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .pix-key {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            display: inline-block;
+            margin: 1rem 0;
+            user-select: all;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            opacity: 0.8;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: none;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.6s forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        /* Responsivo */
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.25rem; }
+            
+            section { padding: 3rem 0; }
+        }
+    </style>
+    
+    <!-- Carrega CSS das fontes após o CSS crítico -->
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    </noscript>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content animate">
+                <h1 class="hero-title">ID Telegram Bot</h1>
+                <p class="hero-subtitle">Descubra IDs de usuários, grupos e canais no Telegram de forma simples e rápida</p>
+                
+                <div class="btn-group">
+                    <a href="https://github.com/henriquetourinho/id-telegram-bot" class="btn btn-primary" target="_blank">
+                        Ver no GitHub
+                    </a>
+                    <a href="#installation" class="btn btn-secondary">
+                        Como Instalar
+                    </a>
+                </div>
+                
+                <img src="https://github.com/henriquetourinho/id-telegram-bot/blob/main/media/demo.gif?raw=true" alt="Demonstração do ID Telegram Bot" style="max-width: 100%; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); margin-top: 2rem;" loading="lazy">
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Sobre o Projeto -->
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title animate">Sobre o Projeto</h2>
+                
+                <div class="features">
+                    <div class="feature animate delay-1">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <h3>Rápido e Eficiente</h3>
+                        <p>Obtenha IDs instantaneamente com um simples comando ou encaminhamento de mensagem.</p>
+                    </div>
+                    
+                    <div class="feature animate delay-2">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <h3>Respeita a Privacidade</h3>
+                        <p>Informa claramente quando um ID não pode ser obtido devido às configurações de privacidade.</p>
+                    </div>
+                    
+                    <div class="feature animate delay-3">
+                        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <h3>Código Aberto</h3>
+                        <p>Totalmente gratuito, modificável e distribuído sob licença GNU GPLv3.</p>
+                    </div>
+                </div>
+                
+                <div class="card animate">
+                    <div class="card-header">
+                        <h3>Tecnologia Moderna</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>O <strong>ID Telegram Bot</strong> foi desenvolvido com:</p>
+                        <ul>
+                            <li><strong>Python 3.11+</strong> - Utilizando os recursos mais recentes da linguagem</li>
+                            <li><strong>python-telegram-bot</strong> - A biblioteca mais robusta para bots no Telegram</li>
+                            <li><strong>Assincronia</strong> - Para máxima eficiência e desempenho</li>
+                            <li><strong>Boas práticas</strong> - Código limpo, documentado e fácil de entender</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Instalação -->
+        <section id="installation" class="bg-light">
+            <div class="container">
+                <h2 class="section-title animate">🚀 Instalação Rápida</h2>
+                
+                <div class="card animate delay-1">
+                    <div class="card-header">
+                        <h3>Pré-requisitos</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>Python 3.11 ou superior instalado</li>
+                            <li>Token de um bot Telegram (obtido com <a href="https://t.me/BotFather" target="_blank">@BotFather</a>)</li>
+                            <li>Acesso a um terminal/linha de comando</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card animate delay-2">
+                    <div class="card-header">
+                        <h3>Passo a Passo</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>1. Clone o repositório</h4>
+                        <pre><code>git clone https://github.com/henriquetourinho/id-telegram-bot.git
+cd id-telegram-bot</code></pre>
+                        
+                        <h4>2. Configure o ambiente virtual (recomendado)</h4>
+                        <pre><code>python -m venv venv
+# No Linux/macOS:
+source venv/bin/activate
+
+# No Windows:
+venv\Scripts\activate</code></pre>
+                        
+                        <h4>3. Instale as dependências</h4>
+                        <pre><code>pip install -r requirements.txt</code></pre>
+                        
+                        <h4>4. Configure seu token</h4>
+                        <p>Abra o arquivo <code>id_telegram_bot.py</code> e substitua <code>TOKEN</code> pelo token do seu bot.</p>
+                        
+                        <h4>5. Execute o bot</h4>
+                        <pre><code>python id_telegram_bot.py</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Como Usar -->
+        <section id="usage">
+            <div class="container">
+                <h2 class="section-title animate">📚 Como Usar</h2>
+                
+                <div class="features">
+                    <div class="feature animate delay-1">
+                        <h3>Descobrir seu ID</h3>
+                        <p>Simplesmente envie qualquer mensagem para o bot. Ele responderá com seu ID de usuário.</p>
+                    </div>
+                    
+                    <div class="feature animate delay-2">
+                        <h3>Identificar outros</h3>
+                        <p>Encaminhe uma mensagem de outro usuário, grupo ou canal que deseja identificar.</p>
+                    </div>
+                    
+                    <div class="feature animate delay-3">
+                        <h3>Privacidade</h3>
+                        <p>Se um usuário ocultou seu ID, o bot informará que não é possível identificá-lo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Roadmap -->
+        <section id="roadmap" class="bg-light">
+            <div class="container">
+                <h2 class="section-title animate">🛠️ Roadmap</h2>
+                
+                <div class="card animate">
+                    <div class="card-header">
+                        <h3>Próximos Recursos</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><strong>Suporte a múltiplos idiomas</strong> - Internacionalização do bot</li>
+                            <li><strong>Identificação em mídias</strong> - Fotos, vídeos e áudios encaminhados</li>
+                            <li><strong>Dockerização</strong> - Facilidade de deploy com containers</li>
+                            <li><strong>API REST</strong> - Para integração com outros sistemas</li>
+                            <li><strong>Documentação ampliada</strong> - Guias detalhados e vídeos</li>
+                        </ul>
+                        <p class="mt-3">Contribuições são bem-vindas! Envie suas ideias nas <a href="https://github.com/henriquetourinho/id-telegram-bot/issues" target="_blank">issues do GitHub</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Comparativo -->
+        <section id="comparison">
+            <div class="container">
+                <h2 class="section-title animate">💼 Comparativo de Valor</h2>
+                
+                <div class="card animate">
+                    <div class="card-header">
+                        <h3>Mercado vs Open Source</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th>Preço Médio</th>
+                                    <th>ID Telegram Bot</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Código-fonte básico</td>
+                                    <td>R$ 50 - R$ 200</td>
+                                    <td>✅ Gratuito</td>
+                                </tr>
+                                <tr>
+                                    <td>Bot pronto para uso</td>
+                                    <td>R$ 150 - R$ 400</td>
+                                    <td>✅ Fácil instalação</td>
+                                </tr>
+                                <tr>
+                                    <td>Personalização</td>
+                                    <td>R$ 100 - R$ 300/hora</td>
+                                    <td>✅ Código aberto</td>
+                                </tr>
+                                <tr>
+                                    <td>Suporte</td>
+                                    <td>R$ 200 - R$ 500</td>
+                                    <td>✅ Comunidade</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA -->
+        <div class="container">
+            <div class="cta animate">
+                <h2>❤️ Apoie Este Projeto</h2>
+                <p>Se este bot foi útil para você, considere fazer uma contribuição para ajudar no desenvolvimento e manutenção.</p>
+                
+                <div class="pix-key">poupanca@henriquetourinho.com.br</div>
+                <p style="color: white; opacity: 0.8;">Qualquer valor é bem-vindo e muito apreciado!</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="animate">
+        <div class="container">
+            <p>Criado com ❤️ por <strong>Carlos Henrique Tourinho Santana</strong></p>
+            
+            <div class="footer-links">
+                <a href="https://github.com/henriquetourinho" target="_blank">GitHub</a>
+                <a href="https://br.linkedin.com/in/carloshenriquetourinhosantana" target="_blank">LinkedIn</a>
+                <a href="https://wiki.debian.org/henriquetourinho" target="_blank">Debian Wiki</a>
+            </div>
+            
+            <p style="opacity: 0.7; margin-top: 1rem;">© 2024 ID Telegram Bot - Licença GNU GPLv3</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script>
+        // Carrega as fontes após o conteúdo crítico
+        const fontLink = document.createElement('link');
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&display=swap';
+        fontLink.rel = 'stylesheet';
+        document.head.appendChild(fontLink);
+        
+        // Animações ao scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.animate').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Scroll suave para links internos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

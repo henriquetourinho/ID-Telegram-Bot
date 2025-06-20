@@ -1,0 +1,39 @@
+# 🛡️ Política de Segurança – ID Telegram Bot
+
+Obrigado por ajudar a tornar o **ID Telegram Bot** mais seguro!
+
+Abaixo você encontra orientações para relatar vulnerabilidades e boas práticas de segurança para este projeto.
+
+---
+
+## Como Reportar Vulnerabilidades
+
+Se você encontrar uma vulnerabilidade de segurança no **ID Telegram Bot**, siga estes passos:
+
+1. **Não abra uma issue pública** para relatar falhas de segurança.  
+2. Envie um e-mail detalhado para [henriquetourinho@riseup.net](mailto:henriquetourinho@riseup.net) com:
+    - Uma descrição clara da vulnerabilidade
+    - Passos para reproduzir o problema
+    - (Opcional) Sugestão de correção ou mitigação
+
+3. Aguarde retorno. Me comprometo a responder em até 7 dias úteis e trabalhar para corrigir o problema o mais rápido possível.
+
+---
+
+## Boas Práticas de Segurança
+
+- **Nunca compartilhe seu token do BotFather em público.**  
+- Recomenda-se rodar o bot em ambientes atualizados e seguros.
+- Mantenha as dependências sempre atualizadas.
+- Caso utilize o bot em produção, monitore os logs para detectar comportamentos suspeitos.
+
+---
+
+## Responsabilidade
+
+As vulnerabilidades serão tratadas com prioridade e, após a resolução, serão publicadas notas de versão (release notes) descrevendo a correção, agradecendo o(s) relator(es) de forma privada ou pública, conforme o desejado.
+
+---
+
+Obrigado por contribuir para um ecossistema mais seguro!  
+— Carlos Henrique Tourinho Santana
